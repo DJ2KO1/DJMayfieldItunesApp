@@ -1,12 +1,15 @@
 package com.example.djmayfielditunesapp.views
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.djmayfielditunesapp.data.MusicInfo
 import com.example.djmayfielditunesapp.data.MusicResponse
 import com.example.djmayfielditunesapp.databinding.FragmentMusicListBinding
 import com.example.djmayfielditunesapp.network.APIService
@@ -82,7 +85,7 @@ class MusicListFragment(
                 ) {
                     if (response.isSuccessful){
                         println(response.toString())
-                        val musicAdapter = MusicAdapter(response.body()!!.results)
+                        val musicAdapter = MusicAdapter(response.body()!!.results, ::playSong)
                         binding.rvMusicList.adapter = musicAdapter
                     }
                     else{
@@ -94,4 +97,10 @@ class MusicListFragment(
                 }
             })
     }
+    fun  playSong(musicInfo: MusicInfo){
+        val i = Intent(Intent.ACTION_VIEW)
+        i.setDataAndType(Uri.parse(musicInfo.previewUrl), "audio/mp4")
+        startActivity(i)
+    }
+
 }

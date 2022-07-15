@@ -10,16 +10,18 @@ import com.example.djmayfielditunesapp.data.MusicInfo
 import com.example.djmayfielditunesapp.databinding.MusicListItemBinding
 
 class MusicAdapter(
-    private val  list: List<MusicInfo>,
+    private val list: List<MusicInfo>,
+    val playSong: (MusicInfo) -> Unit,
 ): RecyclerView.Adapter<MusicAdapter.MusicInfoViewHolder>() {
-    val mp = MediaPlayer().apply {
-        setAudioAttributes(
-            AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .build()
-        )
-    }
+
+//    val mp = MediaPlayer().apply {
+//        setAudioAttributes(
+//            AudioAttributes.Builder()
+//                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                .setUsage(AudioAttributes.USAGE_MEDIA)
+//                .build()
+//        )
+//    }
 
     inner class MusicInfoViewHolder(private val binding: MusicListItemBinding): RecyclerView.ViewHolder(binding.root){
         fun onBind(musicInfo: MusicInfo){
@@ -33,18 +35,20 @@ class MusicAdapter(
                 .into(binding.ivArtwork)
 
                 binding.musicPreview.setOnClickListener() {
-                    mp.reset()
-                    mp.setDataSource(musicInfo.previewUrl)
-                    mp.prepare()
-                    if(mp.isPlaying){
-                        mp.stop()
-                        println("mp is stopped")
-                        mp.prepare()
-                    }
-                    mp.start()
-                    println("mp is starting")
-
+                    playSong(musicInfo)
                 }
+//                    mp.reset()
+//                    mp.setDataSource(musicInfo.previewUrl)
+//                    mp.prepare()
+//                    if(mp.isPlaying){
+//                        mp.stop()
+//                        println("mp is stopped")
+//                        mp.prepare()
+//                    }
+//                    mp.start()
+//                    println("mp is starting")
+//
+//                }
             }
     }
 
